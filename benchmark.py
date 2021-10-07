@@ -39,26 +39,26 @@ downloadTimes = []
 
 
 def downloadFile():
-    # try:
-    partition = random.randint(0, 99)
-    start = time.perf_counter()
-    #transfer.download_file('av-benchmark-s3', str(partition) + '/testfile', "/home/ec2-user/environment/output.dat")
-    client.download_file('av-benchmark-s3', 'testfile' +
-                         str(partition), "/home/ec2-user/environment/output.dat")
-    end = time.perf_counter() - start
-    downloadTimes.append(end)
-    print(f"Download time: {end}s")
-    item = {
-        'node': str(instanceid),
-        'timestamp': str(int(time.time())),
-        'latency': end
-    }
+    try:
+        partition = random.randint(0, 99)
+        start = time.perf_counter()
+        #transfer.download_file('av-benchmark-s3', str(partition) + '/testfile', "/home/ec2-user/environment/output.dat")
+        client.download_file('av-benchmark-s3', 'testfile' +
+                             str(partition), "/home/ec2-user/environment/output.dat")
+        end = time.perf_counter() - start
+        downloadTimes.append(end)
+        print(f"Download time: {end}s")
+        item = {
+            'node': str(instanceid),
+            'timestamp': str(int(time.time())),
+            'latency': end
+        }
 
-    table.put_item(
-        Item=json.loads(json.dumps(item), parse_float=Decimal)
-    )
-    # except:
-    #    print("Download failed")
+        table.put_item(
+            Item=json.loads(json.dumps(item), parse_float=Decimal)
+        )
+    except:
+        print("Download failed")
 
 # for x in range(0,100):
 #    os.system('dd if=/dev/zero of=output.dat  bs=50M  count=1')
