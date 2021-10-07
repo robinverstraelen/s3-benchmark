@@ -14,7 +14,7 @@ my_config = Config(
     read_timeout=0.2,
 )
 client = boto3.client('s3', 'eu-west-1', config=my_config)
-dynamodb = boto3.resource('dynamodb')
+dynamodb = boto3.resource('dynamodb', 'eu-west-1')
 table = dynamodb.Table('s3-benchmark')
 instanceid = os.popen(
     "curl http://169.254.169.254/latest/meta-data/instance-id").read()
@@ -44,7 +44,7 @@ def downloadFile():
         start = time.perf_counter()
         #transfer.download_file('av-benchmark-s3', str(partition) + '/testfile', "/home/ec2-user/environment/output.dat")
         client.download_file('av-benchmark-s3', 'testfile' +
-                             str(partition), "/home/ec2-user/environment/output.dat")
+                             str(partition), "/home/ec2-user/output.dat")
         end = time.perf_counter() - start
         downloadTimes.append(end)
         print(f"Download time: {end}s")
